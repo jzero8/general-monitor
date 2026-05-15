@@ -356,11 +356,11 @@ async function fetchVolumeRatio(){
     const bnData=await bnRes.json();
     const cbData=await cbRes.json();
 
-    // Binance: index 7 = quote asset volume (USDT)
+    // Binance: index 7 = quote asset volume (USDT), already in USD
     const bnVol=bnData.reduce((s,d)=>s+parseFloat(d[7]),0);
-    // Coinbase: [time, low, high, open, close, volume] → vol in BTC, convert to USD
+    // Coinbase: [time, low, high, open, close, volume] → vol[5] in BTC → convert to USD
     const btcPrice=parseFloat(bnData[bnData.length-1][4]);
-    const cbVol=cbData.reduce((s,d)=>s+parseFloat(d[5]),0)*btcPrice;
+    const cbVol=cbData.reduce((s,d)=>s+parseFloat(d[5]||0),0)*btcPrice;
 
     const total=bnVol+cbVol;
     const cbPct=cbVol/total*100;
@@ -427,15 +427,43 @@ async function fetchCPI(){
   const dotEl=document.getElementById('cpi-dot'),statusEl=document.getElementById('cpi-status'),errBox=document.getElementById('error-box');
   errBox.style.display='none';dotEl.style.background='var(--amber)';statusEl.className='status';statusEl.textContent='Fetching...';
   try{
-    const[bnRes,cbRes]=await Promise.all([fetch('https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=65'),fetch('https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=60&limit=65')]);
+    const[bnRes,cbRes]=await Promise.all([
+      fetch('https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=70'),
+      fetch('https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=60&limit=70')
+    ]);
     if(!bnRes.ok)throw new Error('Binance '+bnRes.status);
     if(!cbRes.ok)throw new Error('Coinbase '+cbRes.status);
     const bnData=await bnRes.json(),cbData=await cbRes.json();
     if(!Array.isArray(bnData)||!Array.isArray(cbData))throw new Error('Bad format');
-    const bnCandles=bnData.map(d=>({t:d[0],c:parseFloat(d[4])})).sort((a,b)=>a.t-b.t);
-    const cbCandles=cbData.map(d=>({t:d[0]*1000,c:parseFloat(d[4])})).sort((a,b)=>a.t-b.t);
-    const cbMap=new Map(cbCandles.map(d=>[Math.floor(d.t/60000),d.c]));
-    const matched=bnCandles.map(d=>{const k=Math.floor(d.t/60000);const cb=cbMap.get(k)||cbMap.get(k-1)||cbMap.get(k+1);if(!cb)return null;return{bn:d.c,cb,cpi:(cb-d.c)/d.c*100};}).filter(Boolean);
+
+    const bnCandles=bnData.map(d=>({
+      t: Math.floor(d[0]/60000)*60000,
+      c: parseFloat(d[4])
+    })).sort((a,b)=>a.t-b.t);
+
+    const cbCandles=cbData.map(d=>({
+      t: Math.floor(parseInt(d[0])/60)*60000,
+      c: parseFloat(d[4])
+    })).sort((a,b)=>a.t-b.t);
+
+    /* Strict match — only use minutes where BOTH exchanges have a closed candle */
+    const cbMap=new Map(cbCandles.map(d=>[d.t/60000, d.c]));
+    const bnMap=new Map(bnCandles.map(d=>[d.t/60000, d.c]));
+
+    /* Find the latest minute present in BOTH feeds */
+    const cbKeys=new Set(cbCandles.map(d=>d.t/60000));
+    const bnKeys=new Set(bnCandles.map(d=>d.t/60000));
+    const commonKeys=[...cbKeys].filter(k=>bnKeys.has(k)).sort((a,b)=>a-b);
+
+    const matched=commonKeys.map(k=>{
+      const bn=bnMap.get(k);
+      const cb=cbMap.get(k);
+      return{bn, cb, cpi:(cb-bn)/bn*100, t:k*60000};
+    });
+
+    console.log('CPI DEBUG — common keys last 3:',commonKeys.slice(-3).map(k=>new Date(k*60000).toLocaleTimeString()));
+    console.log('CB last candle:',new Date(cbCandles[cbCandles.length-1].t).toLocaleTimeString(),'close='+cbCandles[cbCandles.length-1].c);
+    console.log('BN last candle:',new Date(bnCandles[bnCandles.length-1].t).toLocaleTimeString(),'close='+bnCandles[bnCandles.length-1].c);
     if(matched.length<10)throw new Error('Not enough candles');
     const recent=matched.slice(-60);
     cpiHistory=recent.map(d=>d.cpi);btcHistory=recent.map(d=>d.bn);
