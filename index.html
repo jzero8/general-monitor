@@ -25,12 +25,24 @@
   .title{font-size:13px;font-weight:500;letter-spacing:.1em;color:var(--text1);text-transform:uppercase}
   .status{font-size:11px;color:var(--text2);letter-spacing:.05em}
   .status.live{color:var(--green)}.status.err{color:var(--red)}
-  .prices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:16px}
+  .prices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:16px}
   .price-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:14px 16px}
   .price-label{font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
   .price-val{font-size:20px;font-weight:500;color:var(--text1);letter-spacing:-.01em}
   .price-val.pos{color:var(--green)}.price-val.neg{color:var(--red)}
   .price-sub{font-size:10px;color:var(--text3);margin-top:3px}
+  /* VOLUME RATIO CARD */
+  .vol-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:14px 16px}
+  .vol-card.cb-dom{border-color:rgba(0,200,150,.3);background:linear-gradient(160deg,var(--bg2),rgba(0,200,150,.05))}
+  .vol-card.bn-dom{border-color:rgba(255,77,106,.25);background:linear-gradient(160deg,var(--bg2),rgba(255,77,106,.04))}
+  .vol-card.bal{border-color:rgba(245,166,35,.25);background:linear-gradient(160deg,var(--bg2),rgba(245,166,35,.04))}
+  .vol-label{font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+  .vol-bars{display:flex;gap:4px;height:6px;border-radius:3px;overflow:hidden;margin:8px 0 6px}
+  .vol-bar-cb{height:100%;background:var(--green);border-radius:3px;transition:width .5s}
+  .vol-bar-bn{height:100%;background:var(--red);border-radius:3px;transition:width .5s}
+  .vol-detail{display:flex;justify-content:space-between;font-size:9px;color:var(--text3);margin-bottom:4px}
+  .vol-verdict{font-size:10px;font-weight:500;margin-top:4px}
+  .vol-verdict.cb{color:var(--green)}.vol-verdict.bn{color:var(--red)}.vol-verdict.bal{color:var(--amber)}
   .tf-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:16px}
   .tf-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:14px 12px;text-align:center;transition:border-color .3s}
   .tf-card.bull{border-color:rgba(0,200,150,.3);background:linear-gradient(160deg,var(--bg2),rgba(0,200,150,.05))}
@@ -89,7 +101,50 @@
   .progress-bar{height:2px;background:var(--bg4);border-radius:1px;margin-top:8px;overflow:hidden}
   .progress-fill{height:100%;background:var(--green);border-radius:1px;transition:width 1s linear}
   .error-box{background:var(--red-dim);border:0.5px solid rgba(255,77,106,.3);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red);margin-bottom:12px;display:none}
-  button{background:var(--bg3);border:0.5px solid var(--border2);color:var(--text2);border-radius:6px;padding:5px 12px;font-size:11px;font-family:var(--mono);cursor:pointer;letter-spacing:.05em;display:flex;align-items:center;gap:5px}
+  /* SESSION BAR */
+  .session-bar{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding:10px 14px;background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;flex-wrap:wrap}
+  .session-clocks{display:flex;gap:6px;flex:1;flex-wrap:wrap}
+  .sclock{display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:6px;background:var(--bg3);border:0.5px solid var(--border)}
+  .sclock.active-us{background:rgba(0,200,150,0.12);border-color:rgba(0,200,150,0.3)}
+  .sclock.active-london{background:rgba(77,159,255,0.12);border-color:rgba(77,159,255,0.3)}
+  .sclock.active-asia{background:rgba(245,166,35,0.12);border-color:rgba(245,166,35,0.3)}
+  .sclock-dot{width:5px;height:5px;border-radius:50%;background:var(--text3)}
+  .sclock.active-us .sclock-dot{background:var(--green)}
+  .sclock.active-london .sclock-dot{background:var(--blue)}
+  .sclock.active-asia .sclock-dot{background:var(--amber)}
+  .sclock-label{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+  .sclock.active-us .sclock-label{color:var(--green)}
+  .sclock.active-london .sclock-label{color:var(--blue)}
+  .sclock.active-asia .sclock-label{color:var(--amber)}
+  .sclock-time{font-size:11px;font-weight:500;color:var(--text2)}
+  .sclock.active-us .sclock-time{color:var(--green)}
+  .sclock.active-london .sclock-time{color:var(--blue)}
+  .sclock.active-asia .sclock-time{color:var(--amber)}
+  .confidence-badge{font-size:10px;padding:4px 10px;border-radius:5px;font-weight:500;letter-spacing:.06em;white-space:nowrap}
+  .confidence-badge.high{background:rgba(0,200,150,0.12);color:var(--green);border:0.5px solid rgba(0,200,150,0.3)}
+  .confidence-badge.med{background:rgba(245,166,35,0.12);color:var(--amber);border:0.5px solid rgba(245,166,35,0.3)}
+  .confidence-badge.low{background:rgba(255,77,106,0.12);color:var(--red);border:0.5px solid rgba(255,77,106,0.3)}
+  /* ETF FLOW SECTION */
+  .etf-signal-row{display:grid;grid-template-columns:1.4fr repeat(3,minmax(0,1fr));gap:8px;margin-bottom:10px}
+  .etf-combined{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;justify-content:center}
+  .etf-combined-label{font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+  .etf-combined-val{font-size:15px;font-weight:500;color:var(--text2);margin-bottom:3px}
+  .etf-combined-val.bull-bull{color:var(--green)}
+  .etf-combined-val.bear-bear{color:var(--red)}
+  .etf-combined-val.mixed{color:var(--amber)}
+  .etf-combined-sub{font-size:10px;color:var(--text3)}
+  .etf-total{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:14px 16px}
+  .etf-stat-label{font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+  .etf-stat-val{font-size:18px;font-weight:500;color:var(--text1);letter-spacing:-.01em}
+  .etf-stat-val.pos{color:var(--green)} .etf-stat-val.neg{color:var(--red)}
+  .etf-stat-sub{font-size:9px;color:var(--text3);margin-top:3px}
+  .etf-funds-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  .etf-fund{background:var(--bg2);border:0.5px solid var(--border);border-radius:8px;padding:8px 12px;min-width:80px;flex:1}
+  .etf-fund.pos{border-color:rgba(0,200,150,.25);background:linear-gradient(160deg,var(--bg2),rgba(0,200,150,.04))}
+  .etf-fund.neg{border-color:rgba(255,77,106,.25);background:linear-gradient(160deg,var(--bg2),rgba(255,77,106,.04))}
+  .etf-fund-ticker{font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--text1);margin-bottom:4px}
+  .etf-fund-val{font-size:12px;font-weight:500}
+  .etf-fund-val.pos{color:var(--green)} .etf-fund-val.neg{color:var(--red)} .etf-fund-val.neu{color:var(--text3)}border:0.5px solid var(--border2);color:var(--text2);border-radius:6px;padding:5px 12px;font-size:11px;font-family:var(--mono);cursor:pointer;letter-spacing:.05em;display:flex;align-items:center;gap:5px}
   button:hover{background:var(--bg4);color:var(--text1)}
   @media(max-width:900px){.market-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.tf-row{grid-template-columns:repeat(3,minmax(0,1fr))}.prices{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
@@ -104,10 +159,20 @@
   <div class="status" id="cpi-status">Initializing...</div>
 </div>
 <div class="error-box" id="error-box"></div>
+<div class="session-bar">
+  <div class="session-clocks" id="session-clocks"></div>
+  <div class="confidence-badge low" id="confidence-badge">Signal confidence: —</div>
+</div>
 <div class="prices">
   <div class="price-card"><div class="price-label">Coinbase BTC</div><div class="price-val" id="p-cb">—</div><div class="price-sub">BTC-USD</div></div>
   <div class="price-card"><div class="price-label">Binance BTC</div><div class="price-val" id="p-bn">—</div><div class="price-sub">BTCUSDT</div></div>
   <div class="price-card"><div class="price-label">Spread (CPI raw)</div><div class="price-val" id="p-spread">—</div><div class="price-sub" id="p-spread-pct">—</div></div>
+  <div class="vol-card" id="vol-card">
+    <div class="vol-label">Volume · 5m (CB vs BN)</div>
+    <div class="vol-bars"><div class="vol-bar-cb" id="vol-bar-cb" style="width:50%"></div><div class="vol-bar-bn" id="vol-bar-bn" style="width:50%"></div></div>
+    <div class="vol-detail"><span><span style="color:var(--green)">●</span> CB <span id="vol-cb-val">—</span></span><span><span style="color:var(--red)">●</span> BN <span id="vol-bn-val">—</span></span></div>
+    <div class="vol-verdict" id="vol-verdict">Loading...</div>
+  </div>
 </div>
 <div class="tf-row">
   <div class="tf-card neu" id="card-1m"><div class="tf-label">1 min</div><div class="tf-val neu" id="tf-1m">—</div><div class="tf-sub">latest</div></div>
@@ -150,6 +215,54 @@
 </div>
 <div class="market-grid" id="market-grid"></div>
 
+<div class="section-divider">
+  <div class="section-divider-label">Bitcoin ETF Flows</div>
+  <div class="section-divider-line"></div>
+  <div class="status" id="etf-status">—</div>
+</div>
+
+<!-- ETF COMBINED SIGNAL -->
+<div class="etf-signal-row" id="etf-signal-row">
+  <div class="etf-combined" id="etf-combined">
+    <div class="etf-combined-label">Combined Signal</div>
+    <div class="etf-combined-val" id="etf-combined-val">—</div>
+    <div class="etf-combined-sub" id="etf-combined-sub">CPI + ETF</div>
+  </div>
+  <div class="etf-total" id="etf-today">
+    <div class="etf-stat-label">Today (est)</div>
+    <div class="etf-stat-val" id="etf-today-val">—</div>
+    <div class="etf-stat-sub">net flow</div>
+  </div>
+  <div class="etf-total" id="etf-yday">
+    <div class="etf-stat-label">Yesterday</div>
+    <div class="etf-stat-val" id="etf-yday-val">—</div>
+    <div class="etf-stat-sub">net flow</div>
+  </div>
+  <div class="etf-total" id="etf-5d">
+    <div class="etf-stat-label">5-Day Sum</div>
+    <div class="etf-stat-val" id="etf-5d-val">—</div>
+    <div class="etf-stat-sub">net flow</div>
+  </div>
+</div>
+
+<!-- ETF PER-FUND ROW -->
+<div class="etf-funds-row" id="etf-funds-row"></div>
+
+<!-- ETF FLOW CHART -->
+<div class="chart-section">
+  <div class="chart-header">
+    <div class="chart-title">ETF daily net flow · last 30 days</div>
+    <div class="legend">
+      <div class="leg"><div class="leg-sq" style="background:#00c896"></div>inflow</div>
+      <div class="leg"><div class="leg-sq" style="background:#ff4d6a"></div>outflow</div>
+      <div class="leg"><div class="leg-sq" style="background:#4d9fff;height:1px;width:16px"></div>BTC price</div>
+    </div>
+  </div>
+  <div class="cpi-chart-wrap">
+    <canvas id="etf-chart" role="img" aria-label="ETF daily net flow chart">ETF flow history.</canvas>
+  </div>
+</div>
+
 <div class="footer">
   <div>
     <div class="countdown">Next refresh in <b id="cd-sec">60</b>s</div>
@@ -170,6 +283,116 @@ const classify=v=>v>0.001?'bull':v<-0.001?'bear':'neu';
 function fmtMkt(v){if(v==null||isNaN(v))return'—';if(Math.abs(v)>=10000)return v.toLocaleString('en',{maximumFractionDigits:0});if(Math.abs(v)>=1000)return v.toLocaleString('en',{maximumFractionDigits:1});if(Math.abs(v)>=10)return v.toFixed(2);return v.toFixed(3);}
 const fmtChg=v=>(v>=0?'+':'')+v.toFixed(2)+'%';
 
+/* ── SESSION CLOCK ── */
+const SESSIONS=[
+  {id:'asia',   label:'Asia',   tz:'Asia/Tokyo',       color:'amber', open:0,  close:9},
+  {id:'london', label:'London', tz:'Europe/London',    color:'blue',  open:8,  close:17},
+  {id:'us',     label:'US',     tz:'America/New_York', color:'us',    open:9.5,close:16},
+];
+
+function getSessionHour(tz){
+  const s=new Date().toLocaleTimeString('en-US',{timeZone:tz,hour:'2-digit',minute:'2-digit',hour12:false});
+  const [h,m]=s.split(':').map(Number);
+  return h+m/60;
+}
+
+function getActiveSession(){
+  const usH=getSessionHour('America/New_York');
+  const ldnH=getSessionHour('Europe/London');
+  const asiaH=getSessionHour('Asia/Tokyo');
+  if(usH>=9.5&&usH<16) return 'us';
+  if(ldnH>=8&&ldnH<17) return 'london';
+  if(asiaH>=0&&asiaH<9) return 'asia';
+  return 'off';
+}
+
+function getConfidence(session){
+  if(session==='us') return{cls:'high',label:'Signal confidence: HIGH · US session active'};
+  if(session==='london') return{cls:'med',label:'Signal confidence: MED · London session · watch for US open'};
+  if(session==='asia') return{cls:'low',label:'Signal confidence: LOW · Asia session · Binance dominates, CPI less reliable'};
+  return{cls:'low',label:'Signal confidence: LOW · Off hours · thin liquidity on Coinbase'};
+}
+
+function updateSessionBar(){
+  const clocks=document.getElementById('session-clocks');
+  const badge=document.getElementById('confidence-badge');
+  const active=getActiveSession();
+  clocks.innerHTML=SESSIONS.map(s=>{
+    const tz=s.tz;
+    const timeStr=new Date().toLocaleTimeString('en-US',{timeZone:tz,hour:'2-digit',minute:'2-digit',hour12:false});
+    const isActive=s.id===active;
+    return`<div class="sclock ${isActive?'active-'+s.color:''}">
+      <div class="sclock-dot"></div>
+      <div class="sclock-label">${s.label}</div>
+      <div class="sclock-time">${timeStr}</div>
+    </div>`;
+  }).join('');
+  // Add UTC
+  const utcStr=new Date().toLocaleTimeString('en-US',{timeZone:'UTC',hour:'2-digit',minute:'2-digit',hour12:false});
+  clocks.innerHTML+=`<div class="sclock"><div class="sclock-dot"></div><div class="sclock-label">UTC</div><div class="sclock-time">${utcStr}</div></div>`;
+  const conf=getConfidence(active);
+  badge.className='confidence-badge '+conf.cls;
+  badge.textContent=conf.label;
+}
+
+setInterval(updateSessionBar,10000);
+updateSessionBar();
+
+/* ── VOLUME RATIO ── */
+function fmtVol(v){
+  if(v>=1e9)return'$'+(v/1e9).toFixed(2)+'B';
+  if(v>=1e6)return'$'+(v/1e6).toFixed(1)+'M';
+  if(v>=1e3)return'$'+(v/1e3).toFixed(0)+'K';
+  return'$'+v.toFixed(0);
+}
+
+async function fetchVolumeRatio(){
+  try{
+    const[bnRes,cbRes]=await Promise.all([
+      fetch('https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=5'),
+      fetch('https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=60&limit=5')
+    ]);
+    if(!bnRes.ok||!cbRes.ok)throw new Error('Volume fetch failed');
+    const bnData=await bnRes.json();
+    const cbData=await cbRes.json();
+
+    // Binance: index 7 = quote asset volume (USDT)
+    const bnVol=bnData.reduce((s,d)=>s+parseFloat(d[7]),0);
+    // Coinbase: [time, low, high, open, close, volume] → vol in BTC, convert to USD
+    const btcPrice=parseFloat(bnData[bnData.length-1][4]);
+    const cbVol=cbData.reduce((s,d)=>s+parseFloat(d[5]),0)*btcPrice;
+
+    const total=bnVol+cbVol;
+    const cbPct=cbVol/total*100;
+    const bnPct=bnVol/total*100;
+    const ratio=bnVol/Math.max(cbVol,1);
+
+    document.getElementById('vol-bar-cb').style.width=cbPct.toFixed(1)+'%';
+    document.getElementById('vol-bar-bn').style.width=bnPct.toFixed(1)+'%';
+    document.getElementById('vol-cb-val').textContent=fmtVol(cbVol);
+    document.getElementById('vol-bn-val').textContent=fmtVol(bnVol);
+
+    const card=document.getElementById('vol-card');
+    const verdict=document.getElementById('vol-verdict');
+
+    if(ratio<1.5){
+      card.className='vol-card cb-dom';
+      verdict.className='vol-verdict cb';
+      verdict.textContent='✓ CB competitive — CPI signal reliable';
+    }else if(ratio<4){
+      card.className='vol-card bal';
+      verdict.className='vol-verdict bal';
+      verdict.textContent=`⚡ BN ${ratio.toFixed(1)}× CB — weight signal moderately`;
+    }else{
+      card.className='vol-card bn-dom';
+      verdict.className='vol-verdict bn';
+      verdict.textContent=`⚠ BN ${ratio.toFixed(1)}× CB — CPI may be BN-driven noise`;
+    }
+  }catch(e){
+    document.getElementById('vol-verdict').textContent='Vol unavailable';
+  }
+}
+
 /* CPI */
 function setTF(id,val){const el=document.getElementById('tf-'+id),card=document.getElementById('card-'+id),cls=classify(val);el.textContent=fmtCPI(val);el.className='tf-val '+cls;card.className='tf-card '+cls;}
 function updateAlignment(tfs){
@@ -178,6 +401,8 @@ function updateAlignment(tfs){
   const bulls=tfs.filter(v=>v>0.001).length,bears=tfs.filter(v=>v<-0.001).length;
   const box=document.getElementById('signal-box');
   const icons={bull:'ti-trending-up',bear:'ti-trending-down',watch:'ti-alert-triangle',neu:'ti-minus'};
+  const session=getActiveSession();
+  const sessionNote=session==='asia'?' · ⚠ Asia hrs: Binance-driven noise possible':session==='off'?' · ⚠ Off hours: thin Coinbase liquidity':'';
   let cls,icon,msg;
   if(bulls===5){cls='bull';icon=icons.bull;msg='Full bullish alignment — US buyers dominating all timeframes';}
   else if(bears===5){cls='bear';icon=icons.bear;msg='Full bearish alignment — US selling pressure across all timeframes';}
@@ -187,7 +412,7 @@ function updateAlignment(tfs){
   else if(bears>=3&&tfs[0]<-0.001&&tfs[1]<-0.001){cls='watch-bear';icon=icons.watch;msg='Bearish momentum building — short TFs negative, watch for regime flip';}
   else{cls='neutral';icon=icons.neu;msg='Mixed signals — no clear directional bias';}
   box.className='signal-box '+cls;
-  box.innerHTML=`<i class="ti ${icon}" style="font-size:14px"></i> ${msg}`;
+  box.innerHTML=`<i class="ti ${icon}" style="font-size:14px"></i> ${msg}${sessionNote?`<span style="font-size:10px;opacity:.7;margin-left:4px">${sessionNote}</span>`:''}`;
 }
 function renderCpiChart(){
   const n=cpiHistory.length;
@@ -225,6 +450,7 @@ async function fetchCPI(){
     setTF('1m',cpi1m);setTF('5m',cpi5m);setTF('15m',cpi15m);setTF('30m',cpi30m);setTF('1h',cpi1h);
     updateAlignment([cpi1m,cpi5m,cpi15m,cpi30m,cpi1h]);renderCpiChart();
     dotEl.style.background='var(--green)';statusEl.className='status live';statusEl.textContent='Live · '+new Date().toLocaleTimeString();cdTimer=60;
+    fetchVolumeRatio();
   }catch(e){dotEl.style.background='var(--red)';statusEl.className='status err';statusEl.textContent='Error';errBox.style.display='block';errBox.textContent=e.message;}
 }
 
@@ -300,7 +526,128 @@ async function fetchMarkets(){
   document.getElementById('mkt-status').textContent=new Date().toLocaleTimeString();
 }
 
-async function refreshAll(){cdTimer=60;await Promise.all([fetchCPI(),fetchMarkets()]);}
+/* ── ETF FLOWS ── */
+const CG_KEY='5873fd30067b48c5934b076a7b085edf';
+let etfChart=null;
+
+function fmtFlow(v){
+  if(v==null||isNaN(v))return'—';
+  const abs=Math.abs(v);
+  const s=v>=0?'+':'-';
+  if(abs>=1e9)return s+'$'+(abs/1e9).toFixed(2)+'B';
+  if(abs>=1e6)return s+'$'+(abs/1e6).toFixed(0)+'M';
+  return s+'$'+(abs/1e3).toFixed(0)+'K';
+}
+
+async function fetchETF(){
+  document.getElementById('etf-status').textContent='Fetching...';
+  try{
+    const res=await fetch('https://n8n-production-e53a.up.railway.app/webhook/5873fd30067b48c5934b076a7b085edf',{
+      signal:AbortSignal.timeout(10000)
+    });
+    if(!res.ok)throw new Error('Webhook HTTP '+res.status);
+    const json=await res.json();
+    if(json.code!=='0'||!json.data?.length)throw new Error(json.msg||'No ETF data');
+
+    // filter out zero-flow weekend entries, sort oldest first
+    const raw=[...json.data].sort((a,b)=>a.timestamp-b.timestamp);
+    const data=raw.filter(d=>d.flow_usd!==0||d.etf_flows?.some(e=>e.flow_usd));
+    const last30=data.slice(-30);
+    const lastEntry=data[data.length-1];
+    const prevEntry=data[data.length-2]||lastEntry;
+
+    // totals
+    const todayFlow=lastEntry?.flow_usd||0;
+    const ydayFlow=prevEntry?.flow_usd||0;
+    const sum5d=data.slice(-5).reduce((s,d)=>s+(d.flow_usd||0),0);
+
+    const todayEl=document.getElementById('etf-today-val');
+    todayEl.textContent=fmtFlow(todayFlow);
+    todayEl.className='etf-stat-val '+(todayFlow>=0?'pos':'neg');
+
+    const ydayEl=document.getElementById('etf-yday-val');
+    ydayEl.textContent=fmtFlow(ydayFlow);
+    ydayEl.className='etf-stat-val '+(ydayFlow>=0?'pos':'neg');
+
+    const sum5El=document.getElementById('etf-5d-val');
+    sum5El.textContent=fmtFlow(sum5d);
+    sum5El.className='etf-stat-val '+(sum5d>=0?'pos':'neg');
+
+    // per-fund yesterday
+    const funds=lastEntry?.etf_flows||[];
+    const fundsRow=document.getElementById('etf-funds-row');
+    fundsRow.innerHTML=funds
+      .filter(f=>f.etf_ticker&&f.flow_usd!=null)
+      .sort((a,b)=>Math.abs(b.flow_usd||0)-Math.abs(a.flow_usd||0))
+      .slice(0,8)
+      .map(f=>{
+        const v=f.flow_usd||0;
+        const cls=v>0?'pos':v<0?'neg':'neu';
+        return`<div class="etf-fund ${v>0?'pos':v<0?'neg':''}">
+          <div class="etf-fund-ticker">${f.etf_ticker}</div>
+          <div class="etf-fund-val ${cls}">${fmtFlow(v)}</div>
+        </div>`;
+      }).join('');
+
+    // chart
+    const labels=last30.map(d=>{
+      const dt=new Date(d.timestamp);
+      return dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    });
+    const flows=last30.map(d=>d.flow_usd/1e6);
+    const btcPrices=last30.map(d=>d.price_usd);
+    const btcMin=Math.min(...btcPrices),btcMax=Math.max(...btcPrices);
+    const btcNorm=btcPrices.map(v=>btcMin===btcMax?0:(v-btcMin)/(btcMax-btcMin)*80-40);
+
+    if(etfChart)etfChart.destroy();
+    etfChart=new Chart(document.getElementById('etf-chart'),{
+      type:'bar',
+      data:{labels,datasets:[
+        {type:'line',data:btcNorm,borderColor:'#4d9fff',borderWidth:1.5,pointRadius:0,tension:0.3,yAxisID:'y',fill:false,borderDash:[3,3],order:1},
+        {data:flows,backgroundColor:flows.map(v=>v>=0?'rgba(0,200,150,0.55)':'rgba(255,77,106,0.55)'),borderColor:flows.map(v=>v>=0?'#00c896':'#ff4d6a'),borderWidth:0.5,borderRadius:2,yAxisID:'y',order:2}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{backgroundColor:'#1c1c21',borderColor:'rgba(255,255,255,0.1)',borderWidth:0.5,titleColor:'#8a8a9a',bodyColor:'#f0f0f2',
+          callbacks:{title:ctx=>ctx[0].label,label:ctx=>ctx.datasetIndex===1?' Flow: '+fmtFlow((ctx.parsed.y||0)*1e6):' BTC: $'+Math.round(btcPrices[ctx.dataIndex]||0).toLocaleString()}}},
+        scales:{
+          x:{ticks:{maxRotation:0,autoSkip:true,maxTicksLimit:10,font:{size:9,family:'monospace'},color:'#555565'},grid:{color:'rgba(255,255,255,0.04)'},border:{color:'rgba(255,255,255,0.07)'}},
+          y:{ticks:{font:{size:9,family:'monospace'},color:'#555565',callback:v=>v.toFixed(0)+'M'},grid:{color:'rgba(255,255,255,0.04)'},border:{color:'rgba(255,255,255,0.07)'}}
+        }
+      }
+    });
+
+    document.getElementById('etf-status').textContent=new Date().toLocaleTimeString();
+  }catch(e){
+    document.getElementById('etf-status').textContent='Error: '+e.message;
+  }
+}
+
+function updateCombinedSignal(){
+  // call after both CPI and ETF are loaded
+  const cpiEl=document.getElementById('tf-1h');
+  const ydayEl=document.getElementById('etf-yday-val');
+  const el=document.getElementById('etf-combined-val');
+  const sub=document.getElementById('etf-combined-sub');
+  if(!cpiEl||!ydayEl)return;
+  const cpiClass=cpiEl.className; // bull/bear/neu
+  const etfText=ydayEl.textContent;
+  const etfPos=etfText.startsWith('+');
+  const etfNeg=etfText.startsWith('-')&&!etfText.includes('—');
+  const cpiBull=cpiClass.includes('bull');
+  const cpiBear=cpiClass.includes('bear');
+
+  if(cpiBull&&etfPos){el.className='etf-combined-val bull-bull';el.textContent='🟢 BULLISH CONFIRMED';sub.textContent='CPI positive + ETF inflow';}
+  else if(cpiBear&&etfNeg){el.className='etf-combined-val bear-bear';el.textContent='🔴 BEARISH CONFIRMED';sub.textContent='CPI negative + ETF outflow';}
+  else if(cpiBull&&etfNeg){el.className='etf-combined-val mixed';el.textContent='⚠ DIVERGENCE';sub.textContent='CPI positive but ETF outflow';}
+  else if(cpiBear&&etfPos){el.className='etf-combined-val mixed';el.textContent='⚠ DIVERGENCE';sub.textContent='CPI negative but ETF inflow';}
+  else{el.className='etf-combined-val';el.textContent='— MIXED';sub.textContent='No clear signal';}
+}
+
+async function refreshAll(){
+  cdTimer=60;
+  await Promise.all([fetchCPI(),fetchMarkets(),fetchETF()]);
+  updateCombinedSignal();
+}
 function startCountdown(){
   if(cdInterval)clearInterval(cdInterval);
   cdInterval=setInterval(()=>{
